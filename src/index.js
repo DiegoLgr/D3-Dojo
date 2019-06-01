@@ -1,2 +1,2 @@
 require('./index.css')
-import "./round1/index.js";
+import "./round2/index.js";
