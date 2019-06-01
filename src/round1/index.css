@@ -1,0 +1,21 @@
+main {
+  font-family: sans-serif;
+}
+h1 {
+  text-align: center;
+}
+.chart {
+  background: #fcfcfc;
+  padding: 40px;
+  padding-left: 0;
+  border-left: solid 2px black;
+}
+.chart div {
+    font: 10px sans-serif;
+    background-color: steelblue;
+    text-align: right;
+    padding: 3px;
+    margin: 3px;
+    margin-left: 0;
+    color: white;
+  }

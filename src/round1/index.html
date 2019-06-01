@@ -1,0 +1,114 @@
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/atom-one-light.min.css">
+
+<div>
+  <h1>Enter and Exit</h1>
+<!-- First chart -->
+  <h2>Part one: First chart.</h2>
+  <p>
+  When data is bound to a selection, each element in the data array is paired with
+  a node in the selection. If there are <span>fewer</span> nodes  than data, the extra data
+  form the <span>enter</span> selection.
+  </p>
+    <pre>
+      <code>
+        var data = [4, 8, 15, 16, 23, 42]
+
+        d3.select(".chart")
+          .selectAll("div")
+            .data(data)
+          .enter().append("div")
+            .style("width", function(d) { return d * 10 + "px"; })
+            .text(function(d) { return d; });
+      </code>
+    </pre>
+
+    <div class="chart chart1"></div>
+
+    <p>
+      Here, we have an empty selection, so all the data are part of the enter selection.
+      one we have the nodes, we make a div for each one of them and give them a width
+      in function of its data pair.
+    </p>
+
+<!-- more -->
+  <h2>Part two: Adding nodes</h2>
+    <p>
+      Updating nodes are the default selection, the result of the data operator.
+      Thus, if you forget about the enter and exit selections, you will automatically
+      select only the elements for which there exists bouth corresponding data and elemets
+      (divs in this case).
+      A common pattern is to break the initial selection into three parts: the updating
+      nodes to modify, the entering nodes to add, and the exiting nodes to remove.
+    </p>
+      <pre>
+        <code>
+          // After the code show below (Part one).
+
+          var newData = [12, 4];
+          data = data.concat(newData);
+
+          // Update
+          var selection = d3.select(".chart2")
+            .selectAll("div")
+              .data(data)
+              .style("background", "orange")
+
+          // Enter
+          selection
+            .enter().append("div")
+              .style("width", function(d) { return d * 10 + "px"; })
+              .text(function(d) { return d; });
+
+        </code>
+      </pre>
+
+      <div class="chart chart2"></div>
+
+      <p>
+        Here, the first part changes the color of the paired elements.
+        <br>
+        Then we appen "enter()" in order to select the data which exceeds the
+        current nodes (now we have 2 more items in our data than divs in the selection)
+        and we make a new bar for them.
+      </p>
+
+
+  <!-- Less nodes -->
+    <h2>Part three: Deleting nodes</h2>
+      <p>
+      Last, we remove some items from the data array.
+      </p>
+        <pre>
+          <code>
+            // After the code in part one
+            data.pop();
+            data.pop();
+
+            // Update.
+            var selection = d3.select(".chart3")
+              .selectAll("div")
+                .data(data)
+                .style("background", "orange")
+
+            // Deleted nodes
+            selection
+              .exit()
+                .style("background", "red")
+
+          </code>
+        </pre>
+
+        <div class="chart chart3"></div>
+
+        <p>
+          This time we appen "exit()" in order to select the nodes (divs) which exceeds the
+          current selection (now we have 2 less items in our data than divs in the selection)
+          and we change their color to red.
+          <br>
+          If we would not use the "exit()", the last two bars would have remained blue.
+        </p>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
