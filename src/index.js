@@ -1,2 +1,2 @@
 require('./index.css')
-import "./round2/index.js";
+import "./genetic-learningD3/index.js";
