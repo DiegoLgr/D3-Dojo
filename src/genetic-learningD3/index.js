@@ -2,10 +2,10 @@ require('./index.css');
 
 
 import * as d3 from 'd3';
-import {Population, newSpecimen} from "./genetic.js";
+import {Population, newSpecimen, TARGET} from "./genetic.js";
 
 
-var population = Population.new_population(0.2, 1);
+var population = Population.new_population(0.04, 1);
 var generation = 0;
 var best = "AprendiendoD3";
 var bestFitness = 0;
@@ -24,7 +24,7 @@ result.selectAll("p")
     .append("p")
       .text((d)=>{return d});
 
-while (bestFitness < 11 && generation < 100000){
+while (bestFitness < TARGET.length && generation < 5000){
   Population.iterate(population);
 
   population.specimens.forEach(

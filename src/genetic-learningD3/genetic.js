@@ -1,7 +1,7 @@
-
-
-var TARGET = "Learning D3";
+export var TARGET = "Learning D3   ";
 var BODY = Array.from(TARGET);
+
+
 ///////////////////////////
 ///// Public Functions/////
 ///////////////////////////
@@ -16,7 +16,8 @@ function new_population(mutationRate, pairingRate) {
     population.specimens = new Array();
     var specimen;
     for(var i=0; i<100; i++){
-      specimen = newSpecimen(newDna(BODY));
+      specimen = newSpecimen("Aprendiendo D3")
+      //specimen = newSpecimen(newDna(BODY));
       population.specimens.push(specimen);
     }
     return population;
@@ -30,12 +31,11 @@ function iterate(population){
   population.generation ++;
 
   var winners = [];
-  for(var i=0; i<population.specimens.length/2; i++){
+  for(var i=0; i<population.specimens.length; i++){
     winners.push(selectSpecimens(population));
   }
 
-  population.specimens = pairWinners(winners, population.mutationRate);
-  population.specimens = population.specimens.concat(winners);
+  population.specimens = pairWinners(winners, population.mutationRate, population.pairingRate);
 }
 
 export var Population = {
@@ -68,11 +68,15 @@ function selectSpecimens(population){
     return population.specimens[i-1];
 }
 
-function pairWinners(winners, mutationRate){
+function pairWinners(winners, mutationRate, pairingRate){
   var newSpecimens = new Array();
   var middle = winners.length/2;
   for(var i=0; i< middle; i++){
-    var childs = pair(winners[i], winners[middle + i], mutationRate);
+    if (Math.random() < pairingRate){
+      var childs = pair(winners[i], winners[middle + i], mutationRate);
+    }else{
+      childs = [winners[i], winners[i+1]];
+    }
     newSpecimens = newSpecimens.concat(childs);
   }
   return newSpecimens;
@@ -130,6 +134,7 @@ function newDna(body){
       dna.push(body[j]);
     }
   dna = dna.join("");
+  if(dna.length<11){console.log("error: bad generated dna");}
     return dna;
 }
 function newChild(dna, mutationRate){
@@ -141,10 +146,12 @@ function mutate(dna, mutationRate){
   dna = Array.from(dna);
   var j;
   for (var i=0; i<dna.length; i++){
-      if(Math.random() < mutationRate && dna[i] != TARGET[i]){
-        j = Math.floor(Math.random()*(BODY.length + 1));
+      if(Math.random() < mutationRate){
+        j = Math.floor(Math.random()*(BODY.length));
         dna[i] = BODY[j];
       }
   }
-  return dna.join("");
+  dna = dna.join("");
+  if(dna.length<11){console.log("error: bad generated child");}
+  return dna;
 }
