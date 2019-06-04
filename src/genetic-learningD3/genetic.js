@@ -6,6 +6,11 @@ var BODY = Array.from(TARGET);
 ///// Public Functions/////
 ///////////////////////////
 
+export var Population = {
+  new_population: new_population,
+  iterate: iterate,
+}
+
 function new_population(mutationRate, pairingRate) {
     var population = {
       mutationRate: mutationRate,
@@ -17,14 +22,9 @@ function new_population(mutationRate, pairingRate) {
     var specimen;
     for(var i=0; i<100; i++){
       specimen = newSpecimen("Aprendiendo D3")
-      //specimen = newSpecimen(newDna(BODY));
       population.specimens.push(specimen);
     }
     return population;
-}
-
-function setPopulation(population, specimens){
-  population.specimens = specimens;
 }
 
 function iterate(population){
@@ -36,17 +36,19 @@ function iterate(population){
   }
 
   population.specimens = pairWinners(winners, population.mutationRate, population.pairingRate);
+  population.best = getBest(population);
 }
 
-export var Population = {
-  setPopulation: setPopulation,
-  new_population: new_population,
-  iterate: iterate,
-}
+
 
 ////////////////////////////
 ///// Private Functions/////
 ////////////////////////////
+/*
+    selectSpecimens,
+    pairWinners,
+    getBest.
+  */
 
 function selectSpecimens(population){
   var fitnesees = [0];
@@ -82,6 +84,17 @@ function pairWinners(winners, mutationRate, pairingRate){
   return newSpecimens;
 }
 
+function getBest(population){
+  var bestSpecimen = null;
+  var bestFitness = 0;
+  population.specimens.forEach((specimen)=>{
+        if(specimen.fitness > bestFitness){
+          bestSpecimen = specimen;
+          bestFitness = specimen.fitness;
+        }
+    });
+  return bestSpecimen;
+}
 
 
 /*
