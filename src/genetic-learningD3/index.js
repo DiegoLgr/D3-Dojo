@@ -1,24 +1,30 @@
 require('./index.css');
 
+
+import * as d3 from 'd3';
 import {Population, newSpecimen} from "./genetic.js";
 
 
-var population = Population.new_population(1, 1);
-var specimens = [
-                  newSpecimen("le*rning D3"), newSpecimen("L*arni** D3"),
-                  newSpecimen("le*rni*g D3"), newSpecimen("Learni** D*"),
-                  newSpecimen("Le*rni*g*D3"), newSpecimen("**a*ni*g* D"),
-                  newSpecimen("learning D3"), newSpecimen("Learni** D3"),
-                  newSpecimen("Le*rni*g*D3"), newSpecimen("**a*ni*g* D"),
-                  newSpecimen("learning D3"), newSpecimen("Learni** D3"),
-
-                ];
-Population.setPopulation(population, specimens);
-
+var population = Population.new_population(0.2, 1);
 var generation = 0;
-var best = "";
+var best = "AprendiendoD3";
 var bestFitness = 0;
-while (bestFitness < 11 && generation < 20){
+
+var result = d3.select(".result")
+
+result.selectAll("h2")
+    .data([best])
+    .enter()
+    .append("h2")
+      .text((d)=>{return d});
+
+result.selectAll("p")
+    .data([generation])
+    .enter()
+    .append("p")
+      .text((d)=>{return d});
+
+while (bestFitness < 11 && generation < 100000){
   Population.iterate(population);
 
   population.specimens.forEach(
@@ -30,6 +36,16 @@ while (bestFitness < 11 && generation < 20){
     }
   );
   generation++;
+  updateDom(generation, best);
 }
-  console.log(best);
-  console.log(generation);
+
+function updateDom(generation, best){
+  var result = d3.select(".result")
+
+  result.selectAll("h2")
+      .data([best])
+        .text((d)=>{return d});
+  result.selectAll("p")
+      .data([generation])
+        .text((d)=>{return d});
+}
