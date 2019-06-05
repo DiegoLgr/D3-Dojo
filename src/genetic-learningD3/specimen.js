@@ -63,13 +63,13 @@ function newChild(dna, population){
   return newSpecimen(dna, population);
 }
 
-function mutate(dna, population){
+function mutate(dna, mutationRate, mutationBody){
   dna = Array.from(dna);
   var j;
   for (var i=0; i<dna.length; i++){
-      if(Math.random() < population.mutationRate){
-        j = Math.floor(Math.random()*(population.mutationBody.length));
-        dna[i] = population.mutationBody[j];
+      if(Math.random() < mutationRate){
+        j = Math.floor(Math.random()*(mutationBody.length));
+        dna[i] = mutationBody[j];
       }
   }
   dna = dna.join("");

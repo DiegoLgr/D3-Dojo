@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 
 var TARGET = "Learning D3"
 
-var setUp = function(){
+function setUp(){
   // Draws the initial html.
   var result = d3.select(".result")
 
@@ -20,7 +20,7 @@ var setUp = function(){
 }
 
 
-var updateDom = function(population){
+function updateDom(population){
   var result = d3.select(".result")
 
   result.selectAll("h2")

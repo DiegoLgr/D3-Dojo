@@ -22,7 +22,6 @@ var population = Population.new_population(
 function loop(){
   Population.iterate(population);
   Drawer.updateDom(population);
-
   if(population.best.fitness < TARGET.length && population.generation < 5000){
     setTimeout(loop, 70);
   }

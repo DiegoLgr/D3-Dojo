@@ -14,7 +14,7 @@ function new_population(initialValue, target, pairingRate, mutationRate, mutatio
       target: target,
       pairingRate: pairingRate,
       mutationRate: mutationRate,
-      mutationbody: mutationBody,
+      mutationBody: mutationBody,
       generation: 0,
       specimens: null,
     };
