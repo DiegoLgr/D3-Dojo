@@ -1,9 +1,5 @@
 import {Specimen} from './specimen.js';
 
-export var TARGET = "Learning D3   ";
-export var INITIL_STATE = "Aprendiendo D3"
-var BODY = Array.from(TARGET);
-
 ///////////////////////////
 ///// Public Functions/////
 ///////////////////////////
@@ -13,17 +9,19 @@ export var Population = {
   iterate: iterate,
 }
 
-function new_population(mutationRate, pairingRate) {
+function new_population(initialValue, target, pairingRate, mutationRate, mutationBody) {
     var population = {
-      mutationRate: mutationRate,
+      target: target,
       pairingRate: pairingRate,
+      mutationRate: mutationRate,
+      mutationbody: mutationBody,
       generation: 0,
       specimens: null,
     };
     population.specimens = new Array();
     var specimen;
     for(var i=0; i<100; i++){
-      specimen = Specimen.newSpecimen(INITIL_STATE, TARGET)
+      specimen = Specimen.newSpecimen(initialValue, {target:target, mutationBody: mutationBody})
       population.specimens.push(specimen);
     }
     return population;
@@ -37,7 +35,7 @@ function iterate(population){
     winners.push(selectSpecimens(population));
   }
 
-  population.specimens = pairWinners(winners, population.mutationRate, population.pairingRate);
+  population.specimens = pairWinners(winners, population);
   population.best = getBest(population);
 }
 
@@ -72,12 +70,12 @@ function selectSpecimens(population){
     return population.specimens[i-1];
 }
 
-function pairWinners(winners, mutationRate, pairingRate){
+function pairWinners(winners, population){
   var newSpecimens = new Array();
   var middle = winners.length/2;
   for(var i=0; i< middle; i++){
-    if (Math.random() < pairingRate){
-      var childs = Specimen.pair(winners[i], winners[middle + i], mutationRate, BODY, TARGET);
+    if (Math.random() < population.pairingRate){
+      var childs = Specimen.pair(winners[i], winners[middle + i], population);
     }else{
       childs = [winners[i], winners[i+1]];
     }
