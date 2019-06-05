@@ -1,6 +1,8 @@
-export var TARGET = "Learning D3   ";
-var BODY = Array.from(TARGET);
+import {Specimen} from './specimen.js';
 
+export var TARGET = "Learning D3   ";
+export var INITIL_STATE = "Aprendiendo D3"
+var BODY = Array.from(TARGET);
 
 ///////////////////////////
 ///// Public Functions/////
@@ -21,7 +23,7 @@ function new_population(mutationRate, pairingRate) {
     population.specimens = new Array();
     var specimen;
     for(var i=0; i<100; i++){
-      specimen = newSpecimen("Aprendiendo D3")
+      specimen = Specimen.newSpecimen(INITIL_STATE, TARGET)
       population.specimens.push(specimen);
     }
     return population;
@@ -75,7 +77,7 @@ function pairWinners(winners, mutationRate, pairingRate){
   var middle = winners.length/2;
   for(var i=0; i< middle; i++){
     if (Math.random() < pairingRate){
-      var childs = pair(winners[i], winners[middle + i], mutationRate);
+      var childs = Specimen.pair(winners[i], winners[middle + i], mutationRate, BODY, TARGET);
     }else{
       childs = [winners[i], winners[i+1]];
     }
@@ -94,77 +96,4 @@ function getBest(population){
         }
     });
   return bestSpecimen;
-}
-
-
-/*
-##################################################
-################### Especimens ###################
-##################################################
-*/
-export var newSpecimen = function (dna){
-  return {dna: dna, fitness: calcFitnes(dna)};
-}
-
-function pair(specimen1, specimen2, mutationRate){
-  var dna1FirstHalf = getDNAtillI(specimen1, TARGET.length / 2);
-  var dna1SecondHalf = getDNAfromI(specimen1, TARGET.length / 2);
-  var dna2FirstHalf = getDNAtillI(specimen2, TARGET.length / 2);
-  var dna2SecondHalf = getDNAfromI(specimen2, TARGET.length / 2);
-
-  var child1 = newChild(dna1FirstHalf.concat(dna2SecondHalf), mutationRate)
-  var child2 = newChild(dna2FirstHalf.concat(dna1SecondHalf), mutationRate)
-
-
-  return [child1,child2];
-}
-
-function calcFitnes(dna){
-  var fitness = 0;
-
-  for(var i=0; i<dna.length; i++){
-     if(dna[i] == TARGET[i]){
-       fitness ++;
-     }
-  }
-
-  return fitness;
-}
-
-function getDNAfromI(specimen, i){
-    return specimen.dna.slice(i);
-}
-
-function getDNAtillI(specimen, i){
-    return specimen.dna.slice(0, i);
-}
-
-function newDna(body){
-  var dna = new Array();
-  var j;
-    for(var i=0; i<TARGET.length; i++){
-      j = Math.floor(Math.random()*(body.length));
-      dna.push(body[j]);
-    }
-  dna = dna.join("");
-  if(dna.length<11){console.log("error: bad generated dna");}
-    return dna;
-}
-function newChild(dna, mutationRate){
-  dna = mutate(dna, mutationRate);
-  return newSpecimen(dna);
-}
-
-function mutate(dna, mutationRate){
-  dna = Array.from(dna);
-  var j;
-  for (var i=0; i<dna.length; i++){
-      if(Math.random() < mutationRate){
-        j = Math.floor(Math.random()*(BODY.length));
-        dna[i] = BODY[j];
-      }
-  }
-  dna = dna.join("");
-  if(dna.length<11){console.log("error: bad generated child");}
-  return dna;
 }

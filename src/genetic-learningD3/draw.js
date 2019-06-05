@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 
+var TARGET = "Learning D3"
 
 var setUp = function(){
   // Draws the initial html.
