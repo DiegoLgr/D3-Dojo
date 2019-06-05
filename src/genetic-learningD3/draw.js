@@ -1,6 +1,10 @@
 import * as d3 from 'd3';
 
-var TARGET = "Learning D3"
+export var Drawer = {
+  setUp: setUp,
+  updateDom: updateDom,
+}
+
 
 function setUp(){
   // Draws the initial html.
@@ -30,9 +34,4 @@ function updateDom(population){
   result.selectAll("p")
       .data([population.generation])
         .text((d)=>{return "Generation: " + d});
-}
-
-export var Drawer = {
-  setUp: setUp,
-  updateDom: updateDom,
 }
