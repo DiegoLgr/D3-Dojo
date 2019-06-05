@@ -5,7 +5,7 @@ import {Population} from "./genetic.js";
 import {Drawer} from './draw.js';
 
 // Configuration constants.
-var TARGET = "Learning D3";
+var TARGET = "Learning D3   ";
 var MUTATION_BODY = TARGET.split("");
 var INITIAL_VALUE = "Aprendiendo D3";
 var MUTATION_RATE = 0.05; // mutation rate should be less then 0.5 and greater than 0.
