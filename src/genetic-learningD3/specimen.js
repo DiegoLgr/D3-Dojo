@@ -2,27 +2,31 @@ export var Specimen = {
     newSpecimen: newSpecimen,
     pair: pair,
     calcFitnes: calcFitnes,
-    newDna: newDna,
 }
 
 
-function newSpecimen (dna, population){
+function newSpecimen (dna, enviroment){
   return {
     dna: dna,
-    fitness: calcFitnes(dna, population.target),
-    mutationBody: population.mutationBody,
+    enviroment: enviroment,
+    fitness: calcFitnes(dna, enviroment.target),
   };
 }
 
-function pair(specimen1, specimen2, population){
+function pair(specimen1, specimen2){
+  var enviroment = specimen1.enviroment;
+
+
+  if(Math.random() > enviroment.pairingRate)
+    return [specimen1, specimen2]
+
   var dna1FirstHalf = getDNAtillI(specimen1, specimen1.dna.length / 2);
   var dna1SecondHalf = getDNAfromI(specimen1, specimen1.dna.length / 2);
   var dna2FirstHalf = getDNAtillI(specimen2, specimen1.dna.length / 2);
   var dna2SecondHalf = getDNAfromI(specimen2, specimen1.dna.length / 2);
 
-  var child1 = newChild(dna1FirstHalf.concat(dna2SecondHalf), population)
-  var child2 = newChild(dna2FirstHalf.concat(dna1SecondHalf), population)
-
+  var child1 = newChild(dna1FirstHalf.concat(dna2SecondHalf), enviroment, enviroment)
+  var child2 = newChild(dna2FirstHalf.concat(dna1SecondHalf), enviroment, enviroment)
 
   return [child1,child2];
 }
@@ -58,9 +62,9 @@ function newDna(body){
   if(dna.length<11){console.log("error: bad generated dna");}
     return dna;
 }
-function newChild(dna, population){
-  dna = mutate(dna, population.mutationRate, population.mutationBody);
-  return newSpecimen(dna, population);
+function newChild(dna, enviroment){
+  dna = mutate(dna, enviroment.mutationRate, enviroment.mutationBody);
+  return newSpecimen(dna, enviroment);
 }
 
 function mutate(dna, mutationRate, mutationBody){

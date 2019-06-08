@@ -1,31 +1,39 @@
 require('./index.css');
 
-
-import {Population} from "./genetic.js";
+import {Population} from "./population.js";
 import {Drawer} from './draw.js';
+import {Specimen} from './specimen.js';
 
-// Configuration constants.
-var TARGET = "Learning D3   ";
-var MUTATION_BODY = TARGET.split("");
-var INITIAL_VALUE = "Aprendiendo D3";
-var MUTATION_RATE = 0.05; // mutation rate should be less then 0.5 and greater than 0.
-var PAIR_RATE = 0.7; // pair rate should can be whatever you want except 0.
 
-var population = Population.new_population(
-                                           INITIAL_VALUE,
-                                           TARGET,
-                                           PAIR_RATE,
-                                           MUTATION_RATE,
-                                           MUTATION_BODY,
-                                         );
+function main(){
+  Drawer.setUp();
 
-function loop(){
-  Population.iterate(population);
-  Drawer.updateDom(population);
-  if(population.best.fitness < TARGET.length && population.generation < 5000){
-    setTimeout(loop, 70);
-  }
+  var loop = setUp();
+  setTimeout(loop, 1200);
 }
 
-Drawer.setUp();
-setTimeout(loop, 1500);
+
+function setUp(){
+  var enviroment = {
+    target: "Learning D3   ",
+    pairingRate: 0.7,
+    mutationRate: 0.01,
+    mutationBody: "Learning D3   ".split(""),
+  }
+  var population = Population.new_population();
+  var initialValue = "Aprendiendo D3";
+  for(var i=0; i<100; i++){
+      var specimen = Specimen.newSpecimen(initialValue, enviroment)
+      population.specimens.push(specimen);
+  }
+
+  function loop(){ // It may not be the best idea... the point is have population as clojure.
+    Population.iterate(population);
+    Drawer.updateDom(population);
+    if(population.best.fitness < enviroment.target.length && population.generation < 5000)
+      setTimeout(loop, 70);
+  }
+  return loop;
+}
+
+main();
